@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import AuthScreen from '../../screens/AuthScreen';
+import DealAlertsScreen from '../../screens/DealAlertsScreen';
 import HomeScreen from '../../screens/HomeScreen';
 import PriceComparisonScreen from '../../screens/PriceComparisonScreen';
 import PriceHistoryScreen from '../../screens/PriceHistoryScreen';
@@ -47,6 +48,8 @@ export default function Index() {
       return <PriceComparisonScreen onBack={() => setScreen('Home')} />;
     case 'PriceHistory':
       return <PriceHistoryScreen onBack={() => setScreen('Home')} />;
+    case 'DealAlerts':
+      return <DealAlertsScreen onBack={() => setScreen('Home')} />;
     default:
       return <HomeScreen onNavigate={setScreen} onLogout={handleLogout} />;
   }
