@@ -6,6 +6,7 @@ import DealAlertsScreen from '../../screens/DealAlertsScreen';
 import HomeScreen from '../../screens/HomeScreen';
 import PriceComparisonScreen from '../../screens/PriceComparisonScreen';
 import PriceHistoryScreen from '../../screens/PriceHistoryScreen';
+import QRScannerScreen from '../../screens/QRScannerScreen';
 import ShoppingListScreen from '../../screens/ShoppingListScreen';
 
 export default function Index() {
@@ -50,6 +51,8 @@ export default function Index() {
       return <PriceHistoryScreen onBack={() => setScreen('Home')} />;
     case 'DealAlerts':
       return <DealAlertsScreen onBack={() => setScreen('Home')} />;
+    case 'QRScanner':
+      return <QRScannerScreen onBack={() => setScreen('Home')} />;
     default:
       return <HomeScreen onNavigate={setScreen} onLogout={handleLogout} />;
   }

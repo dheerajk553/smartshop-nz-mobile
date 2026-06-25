@@ -2,8 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import {
-    ScrollView, StatusBar, StyleSheet,
-    Text, TouchableOpacity, View
+  ScrollView, StatusBar, StyleSheet,
+  Text, TouchableOpacity, View
 } from 'react-native';
 
 const API = 'http://10.0.0.22:3000/v1';
@@ -12,6 +12,7 @@ export default function HomeScreen({ onNavigate, onLogout }) {
   const [userName, setUserName] = useState('');
   const [stats, setStats]       = useState({ lists: 0, items: 0, savings: 0 });
   const [token, setToken]       = useState('');
+  const [showComingSoon, setShowComingSoon] = useState(false);
 
   const fetchStats = async (t) => {
     try {
@@ -37,7 +38,7 @@ export default function HomeScreen({ onNavigate, onLogout }) {
     { icon:'🛒', title:'Shopping List',    desc:'Manage your grocery list and track what you need',        color:'#e3f2fd', border:'#1565c0', screen:'ShoppingList' },
     { icon:'📈', title:'Price History',    desc:'Track price changes over time and spot the best deals',   color:'#fff3e0', border:'#e65100', screen:'PriceHistory' },
     { icon:'🔔', title:'Deal Alerts',      desc:'Get notified when prices drop on your favourite items',   color:'#fce4ec', border:'#c62828', screen:'DealAlerts' },
-    { icon:'📍', title:'Store Navigation', desc:'Find products inside the store using QR codes',           color:'#f3e5f5', border:'#6a1b9a', screen:'Navigation' },
+    { icon:'📍', title:'Store Navigation', desc:'Find products inside the store using QR codes', color:'#f3e5f5', border:'#6a1b9a', screen:'QRScanner' },
     { icon:'🤖', title:'AI Recommendations', desc:'Smart suggestions based on your shopping habits',      color:'#e0f7fa', border:'#006064', screen:'AIRecommend' },
   ];
 
@@ -93,7 +94,13 @@ export default function HomeScreen({ onNavigate, onLogout }) {
             <TouchableOpacity
               key={f.screen}
               style={[s.card, { backgroundColor: f.color, borderLeftColor: f.border }]}
-              onPress={() => onNavigate(f.screen)}
+              onPress={() => {
+                if (f.screen === 'AIRecommend') {
+                  setShowComingSoon(true);
+                  return;
+                }
+                onNavigate(f.screen);
+              }}
               activeOpacity={0.85}
             >
               <Text style={s.cardIcon}>{f.icon}</Text>
@@ -103,6 +110,18 @@ export default function HomeScreen({ onNavigate, onLogout }) {
             </TouchableOpacity>
           ))}
         </View>
+
+        {showComingSoon && (
+          <View style={s.comingSoonBanner}>
+            <Text style={s.comingSoonTitle}>🚧 Coming Soon</Text>
+            <Text style={s.comingSoonText}>
+              AI Recommendations will be available in Sprint 4, powered by collaborative filtering.
+            </Text>
+            <TouchableOpacity style={s.comingSoonClose} onPress={() => setShowComingSoon(false)}>
+              <Text style={s.comingSoonCloseText}>Got it</Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
         <View style={s.footer}>
           <Text style={s.footerText}>SmartShop NZ · MSE907 Capstone</Text>
@@ -142,4 +161,14 @@ const s = StyleSheet.create({
   footer:      { padding:24, alignItems:'center' },
   footerText:  { color:'#aaa', fontSize:12 },
   footerSub:   { color:'#ccc', fontSize:11, marginTop:2 },
+  comingSoonBanner: {
+    margin: 16, padding: 16, backgroundColor: '#e0f7fa',
+    borderRadius: 12, borderLeftWidth: 4, borderLeftColor: '#006064',
+  },
+  comingSoonTitle: { fontSize: 15, fontWeight: '700', color: '#333', marginBottom: 6 },
+  comingSoonText: { fontSize: 13, color: '#555', lineHeight: 19, marginBottom: 10 },
+  comingSoonClose: {
+    backgroundColor: '#006064', paddingVertical: 8, borderRadius: 8, alignItems: 'center',
+  },
+  comingSoonCloseText: { color: '#fff', fontWeight: '600', fontSize: 13 },
 });
