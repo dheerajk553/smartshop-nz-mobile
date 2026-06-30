@@ -12,7 +12,6 @@ export default function HomeScreen({ onNavigate, onLogout }) {
   const [userName, setUserName] = useState('');
   const [stats, setStats]       = useState({ lists: 0, items: 0, savings: 0 });
   const [token, setToken]       = useState('');
-  const [showComingSoon, setShowComingSoon] = useState(false);
 
   const fetchStats = async (t) => {
     try {
@@ -39,7 +38,7 @@ export default function HomeScreen({ onNavigate, onLogout }) {
     { icon:'📈', title:'Price History',    desc:'Track price changes over time and spot the best deals',   color:'#fff3e0', border:'#e65100', screen:'PriceHistory' },
     { icon:'🔔', title:'Deal Alerts',      desc:'Get notified when prices drop on your favourite items',   color:'#fce4ec', border:'#c62828', screen:'DealAlerts' },
     { icon:'📍', title:'Store Navigation', desc:'Find products inside the store using QR codes', color:'#f3e5f5', border:'#6a1b9a', screen:'QRScanner' },
-    { icon:'🤖', title:'AI Recommendations', desc:'Smart suggestions based on your shopping habits',      color:'#e0f7fa', border:'#006064', screen:'AIRecommend' },
+    { icon:'💰', title:'Price Optimisation', desc:'Find the cheapest store for your whole shopping list', color:'#e0f7fa', border:'#006064', screen:'PriceOptimisation' },
   ];
 
   const stores = [
@@ -94,13 +93,7 @@ export default function HomeScreen({ onNavigate, onLogout }) {
             <TouchableOpacity
               key={f.screen}
               style={[s.card, { backgroundColor: f.color, borderLeftColor: f.border }]}
-              onPress={() => {
-                if (f.screen === 'AIRecommend') {
-                  setShowComingSoon(true);
-                  return;
-                }
-                onNavigate(f.screen);
-              }}
+              onPress={() => onNavigate(f.screen)}
               activeOpacity={0.85}
             >
               <Text style={s.cardIcon}>{f.icon}</Text>
@@ -110,18 +103,6 @@ export default function HomeScreen({ onNavigate, onLogout }) {
             </TouchableOpacity>
           ))}
         </View>
-
-        {showComingSoon && (
-          <View style={s.comingSoonBanner}>
-            <Text style={s.comingSoonTitle}>🚧 Coming Soon</Text>
-            <Text style={s.comingSoonText}>
-              AI Recommendations will be available in Sprint 4, powered by collaborative filtering.
-            </Text>
-            <TouchableOpacity style={s.comingSoonClose} onPress={() => setShowComingSoon(false)}>
-              <Text style={s.comingSoonCloseText}>Got it</Text>
-            </TouchableOpacity>
-          </View>
-        )}
 
         <View style={s.footer}>
           <Text style={s.footerText}>SmartShop NZ · MSE907 Capstone</Text>
